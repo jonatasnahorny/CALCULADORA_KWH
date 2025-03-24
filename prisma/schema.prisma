@@ -1,0 +1,47 @@
+// Arquivo schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")  // Definido no arquivo .env
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// modelo de relógio
+model relogio {
+  id                 Int                 @id @default(autoincrement())  // identificador único
+  nome               String              // nome do relógio
+  principal_id       Int?                // relógio principal associado (opcional)
+  ativo              Boolean             // status de ativo/inativo
+  sub_relogios       relogio[]           @relation("relogio_principal")
+  leituras_sub       leitura_sub_relogio[] // relação com leituras de sub-relógios
+  relogio_principal  relogio?            @relation("relogio_principal", fields: [principal_id], references: [id])
+  
+  faturas            fatura[]             @relation("relogio_fatura")
+}
+
+// modelo de leitura do sub-relógio
+model leitura_sub_relogio {
+  id          Int     @id @default(autoincrement())  
+  fatura_id   Int     
+  relogio_id  Int     
+  consumo_kwh Float   
+  
+  fatura      fatura  @relation(fields: [fatura_id], references: [id])
+  relogio     relogio @relation(fields: [relogio_id], references: [id])
+}
+
+// modelo de fatura
+model fatura {
+  id               Int                 @id @default(autoincrement())  
+  valor            Float              
+  data_vencimento  DateTime           
+  status           String              // status da fatura (pago, pendente, etc.)
+  
+  relogio_id       Int                 // chave estrangeira para relogio
+  
+  relogios         relogio[]            @relation("relogio_fatura")
+  leituras         leitura_sub_relogio[]  
+}
