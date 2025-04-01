@@ -1,26 +1,20 @@
-// Importa as dependências
-require('dotenv').config(); // Carrega variáveis do arquivo .env
-const express = require('express'); // Express para criar o servidor
-const { PrismaClient } = require('@prisma/client'); // Prisma Client para interagir com o banco de dados
+require('dotenv').config();
+const express = require('express');
+const relogioRoutes = require('./routes/relogioRoutes');
+const leituraSubRelogioRoutes = require('./routes/leituraSubRelogioRoutes');
+const faturaRoutes = require('./routes/faturaRoutes'); // Importando fatura
 
-// Cria uma instância do servidor Express
 const app = express();
 
-// Cria uma instância do Prisma Client
-const prisma = new PrismaClient();
+// Permite enviar JSON no corpo da requisição
+app.use(express.json());
 
-// Rota para testar a conexão com o banco
-app.get('/', async (req, res) => {
-  try {
-    // Exemplo de consulta no banco de dados com Prisma
-    const relogios = await prisma.relogio.findMany();
-    res.json(relogios); // Retorna os dados de todos os relógios como JSON
-  } catch (error) {
-    res.status(500).send('Erro ao conectar ao banco de dados');
-  }
-});
+// Usar as rotas
+app.use('/api', relogioRoutes);
+app.use('/api', subRelogioRoutes);
 
-// Configura o servidor para escutar na porta 3000
-app.listen(3000, () => {
-  console.log('Servidor rodando na porta 3000');
+//servidor rodando
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
