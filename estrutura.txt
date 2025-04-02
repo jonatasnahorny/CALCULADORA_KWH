@@ -1,0 +1,26 @@
+.env
+.git
+.gitignore
+env.example
+listarEstrutura.js
+node_modules
+package-lock.json
+package.json
+prisma
+|  migrations
+|  |  20250401012914_init
+|  |  |  migration.sql
+|  |  migration_lock.toml
+|  schema.prisma
+README.md
+src
+|  config
+|  |  prismaClient.js
+|  controllers
+|  |  relogioController.js
+|  |  subRelogioController.js
+|  index.js
+|  models
+|  routes
+|  |  relogioRoutes.js
+|  |  subRelogioRoutes.js

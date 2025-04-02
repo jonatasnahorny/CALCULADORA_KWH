@@ -1,8 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const relogioRoutes = require('./routes/relogioRoutes');
-const leituraSubRelogioRoutes = require('./routes/leituraSubRelogioRoutes');
-const faturaRoutes = require('./routes/faturaRoutes'); // Importando fatura
+const subRelogioRoutes = require('./routes/subRelogioRoutes'); 
 
 const app = express();
 
@@ -10,10 +9,10 @@ const app = express();
 app.use(express.json());
 
 // Usar as rotas
-app.use('/api', relogioRoutes);
-app.use('/api', subRelogioRoutes);
+app.use('/', relogioRoutes);
+app.use('/', subRelogioRoutes); // Corrigir aqui para usar a rota correta
 
-//servidor rodando
+// servidor rodando
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
